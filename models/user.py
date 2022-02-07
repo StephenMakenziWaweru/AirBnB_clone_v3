@@ -24,7 +24,7 @@ class User(BaseModel, Base):
             passive_deletes=True,
             single_parent=True)
         reviews = relationship(
-            "Review", 
+            "Review",
             cascade="all,delete",
             backref=backref("user"),
             passive_deletes=True,
