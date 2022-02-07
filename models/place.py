@@ -23,13 +23,13 @@ class Place(BaseModel, Base):
     """Representation of Place """
     if models.storage_t == 'db':
         __tablename__ = 'places'
-        city_id = Column(String(60), 
+        city_id = Column(String(60),
                          ForeignKey('cities.id', onupdate='CASCADE',
                                     ondelete='CASCADE'),
                          nullable=False)
         user_id = Column(String(60),
                          ForeignKey('users.id', onupdate='CASCADE',
-                                    ondelete='CASCADE'), 
+                                    ondelete='CASCADE'),
                          nullable=False)
         name = Column(String(128), nullable=False)
         description = Column(String(1024), nullable=True)
