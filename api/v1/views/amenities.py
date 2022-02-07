@@ -30,7 +30,8 @@ def create_amenity():
     return create_model('Amenity', None, None, data)
 
 
-@app_views.route('/amenities/<amenity_id>', strict_slashes=False, methods=['PUT'])
+@app_views.route('/amenities/<amenity_id>', strict_slashes=False,
+                 methods=['PUT'])
 def update_amenity(amenity_id):
     """[PUT] - updates a amenity object"""
     auto_data = ['id', 'created_at', 'updated_at']
