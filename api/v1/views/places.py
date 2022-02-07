@@ -42,6 +42,7 @@ def update_place(place_id):
     auto_data = ["id", "created_at", "updated_at", "user_id", "city_id"]
     return update_model(model, place_id, auto_data)
 
+
 def search_places():
     """ retrieves all Place objects depending of the JSON in the body
      of the request"""
