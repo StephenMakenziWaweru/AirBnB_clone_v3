@@ -41,3 +41,33 @@ def update_place(place_id):
     """[PUT] - updates a place object"""
     auto_data = ["id", "created_at", "updated_at", "user_id", "city_id"]
     return update_model(model, place_id, auto_data)
+
+def search_places():
+    """ retrieves all Place objects depending of the JSON in the body
+     of the request"""
+    data = request.get_json(force=True, silent=True)
+    if data is None:
+        abort(400, 'Not a JSON')
+
+    ok = {"states", "cities"}
+    places = []
+    if not len(data) or all([len(v) == 0 for k, v in data.items() if k in ok]):
+        places = storage.all("Place").values()
+
+    if len(data.get("states", [])):
+        states = [storage.get("State", id) for id in data["states"]]
+        [[[places.append(place) for place in city.places]
+         for city in state.cities] for state in states if state]
+
+    if len(data.get("cities", [])):
+        cities = [storage.get("City", id) for id in data["cities"]]
+        [[places.append(place) for place in city.places]
+         for city in cities if city]
+
+    places = list(set(places))
+    if len(data.get("amenities", [])):
+        amenities = [storage.get("Amenity", id) for id in data["amenities"]]
+        places = [place for place in places
+                  if all([a in place.amenities for a in amenities])]
+
+    return jsonify([place.to_dict() for place in places])
